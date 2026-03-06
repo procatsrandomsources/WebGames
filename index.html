@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProcatsZestyBestie | Unblocked Games</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+body{
+margin:0;
+background:#020202;
+font-family:'Inter',sans-serif;
+overflow-x:hidden;
+color:white;
+}
+
+#initial-loader{
+position:fixed;
+inset:0;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#020202;
+z-index:9999;
+flex-direction:column;
+gap:1rem;
+}
+
+.spinner{
+width:40px;
+height:40px;
+border:3px solid rgba(6,182,212,0.1);
+border-top-color:#06b6d4;
+border-radius:50%;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+to{transform:rotate(360deg);}
+}
+
+@keyframes slideUp{
+from{transform:translateY(15px);opacity:0;}
+to{transform:translateY(0);opacity:1;}
+}
+
+.animate-pop{
+animation:slideUp 0.2s ease-out forwards;
+}
+</style>
+</head>
+
+<body>
+
+<div id="initial-loader">
+<img src="https://www.pngplay.com/wp-content/uploads/13/Freepnglogos-Free-PNG.png" class="w-16 h-16 object-contain">
+<div class="spinner"></div>
+</div>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script type="text/babel">
+
+const {useState,useEffect,useRef}=React
+
+const Icon=({name,className=""})=>{
+const iconRef=useRef(null)
+
+useEffect(()=>{
+if(iconRef.current && window.lucide){
+lucide.createIcons({
+icons:{[name]:lucide.icons[name]},
+nameAttr:'data-lucide',
+attrs:{class:className||'w-5 h-5'}
+})
+}
+},[name,className])
+
+return <i ref={iconRef} data-lucide={name} className={`inline-flex ${className}`}></i>
+}
+
+const MOCK_GAMES=[
+
+{
+id:"g1",
+title:"Pixel Craft 1.8.8",
+thumb:"https://wallpapersok.com/images/high/minecraft-landscape-logo-qwrbdubxu5n1n2k7.webp",
+url:"https://pixelclient.xyz/",
+tut:"Click WASM under 1.8.8 then wait for assets."
+},
+
+{
+id:"g2",
+title:"Youtube",
+thumb:"https://static.vecteezy.com/system/resources/previews/065/386/840/non_2x/youtube-icon-logo-yt-app-editable-transparent-background-premium-social-media-design-for-digital-download-free-png.png",
+url:"https://yt-clone-bay.vercel.app/",
+tut:"Watch anything."
+},
+
+{
+id:"g3",
+title:"Five Nights At Freddys",
+thumb:"https://logos-world.net/wp-content/uploads/2023/06/Five-Nights-at-Freddys-Symbol.png",
+url:"https://irv77.github.io/hd_fnaf/",
+tut:"Survive the night."
+},
+
+{
+id:"g4",
+title:"Portal",
+thumb:"https://gamingbolt.com/wp-content/uploads/2022/05/portal-1-featured.jpg",
+url:"https://turbowarp.org/1165334435/embed",
+tut:"Use 1 2 3 4 to change resolution. Hold R to grab cubes."
+},
+
+{
+id:"g5",
+title:"Rocket League Sideswipe",
+thumb:"https://d1lss44hh2trtw.cloudfront.net/assets/article/2021/11/30/rocket-league-sideswipe_feature.jpeg",
+url:"https://turbowarp.org/301928245/embed",
+tut:`PLAYER 1
+Jump - W
+Left - A
+Right - D
+Boost - SPACE
+
+PLAYER 2
+Jump - I
+Left - J
+Right - L
+Boost - K
+
+OTHER
+Reset field - R
+Skip song - 1`
+},
+
+{
+id:"g6",
+title:"Geometry Dash",
+thumb:"https://mcdn.wallpapersafari.com/medium/57/43/bZMkiT.jpg",
+url:"https://turbowarp.org/150998779/embed",
+tut:"Bro its GD dont tell me you dont know how :sob:"
+}
+
+]
+
+const PlayerView=({game})=>{
+
+const openTab=(e)=>{
+e.stopPropagation()
+window.open(game.url,'_blank')
+}
+
+return(
+
+<div className="flex flex-col gap-6">
+
+<div className="aspect-video lg:aspect-[21/9] bg-black relative group transition-all shadow-2xl overflow-hidden rounded-[2.5rem] border border-white/10">
+
+<iframe
+src={game.url}
+className="w-full h-full border-none"
+/>
+
+<div className="absolute top-6 right-6 flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+
+<button
+onClick={openTab}
+className="bg-white/10 hover:bg-white/20 backdrop-blur-md p-4 rounded-full border border-white/10 text-white"
+>
+
+<Icon name="Maximize"/>
+
+</button>
+
+</div>
+
+</div>
+
+<h1 className="text-4xl font-black italic uppercase">
+{game.title}
+</h1>
+
+</div>
+
+)
+
+}
+
+const App=()=>{
+
+const [view,setView]=useState({type:"GRID",data:null})
+
+useEffect(()=>{
+const loader=document.getElementById("initial-loader")
+if(loader) loader.style.display="none"
+},[])
+
+return(
+
+<div className="min-h-screen pt-24 pb-24 bg-[#020202] px-4 md:px-8">
+
+<nav className="fixed top-0 inset-x-0 h-16 bg-[#050505]/90 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-8">
+
+<div className="flex items-center gap-3 cursor-pointer" onClick={()=>setView({type:"GRID"})}>
+
+<img src="https://www.pngplay.com/wp-content/uploads/13/Freepnglogos-Free-PNG.png" className="w-8"/>
+
+<span className="font-black italic text-xl uppercase tracking-tighter">
+ProcatsZestyBestie
+</span>
+
+</div>
+
+</nav>
+
+<div className="max-w-[1800px] mx-auto grid grid-cols-1 xl:grid-cols-4 gap-12">
+
+<div className="xl:col-span-3">
+
+{view.type==="GRID"?(
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+{MOCK_GAMES.map(g=>(
+
+<div key={g.id} className="group cursor-pointer" onClick={()=>setView({type:"PLAYER",data:g})}>
+
+<div className="aspect-video rounded-[2rem] overflow-hidden border border-white/5 group-hover:border-cyan-500/50 transition-all bg-[#0a0a0a]">
+
+<img
+src={g.thumb}
+className="w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+/>
+
+</div>
+
+<h3 className="mt-4 font-black italic uppercase text-xl group-hover:text-cyan-400">
+{g.title}
+</h3>
+
+</div>
+
+))}
+
+</div>
+
+):( 
+
+<div>
+
+<button
+onClick={()=>setView({type:"GRID"})}
+className="mb-6 flex items-center gap-2 text-zinc-500 hover:text-white uppercase font-black text-xs italic"
+>
+
+<Icon name="ArrowLeft" className="w-4 h-4"/>
+Back to Library
+
+</button>
+
+<PlayerView game={view.data}/>
+
+</div>
+
+)}
+
+</div>
+
+<div className="xl:col-span-1 border-t xl:border-t-0 xl:border-l border-white/5 pt-10 xl:pt-0 xl:pl-10">
+
+<div className="sticky top-28">
+
+<h2 className="text-[10px] font-black text-cyan-500 uppercase tracking-[0.4em] mb-6">
+Instructions
+</h2>
+
+<div className="p-6 rounded-3xl bg-white/5 border border-white/10 text-zinc-400 text-sm leading-relaxed">
+
+<p className="mb-3 text-white font-bold italic uppercase tracking-tight">
+{view.type==="PLAYER" ? view.data.title : "Select a Game"}
+</p>
+
+<p>
+{view.type==="PLAYER"
+? view.data.tut
+: "Click a game from the left to start playing. Press the fullscreen icon to open it in a new tab."}
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+)
+
+}
+
+const root=ReactDOM.createRoot(document.getElementById("root"))
+root.render(<App/>)
+
+</script>
+
+</body>
+</html>
